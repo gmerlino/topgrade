@@ -71,8 +71,15 @@ pub fn run_cargo_update(ctx: &ExecutionContext) -> Result<()> {
     };
 
     ctx.run_type()
-        .execute(cargo_update)
-        .args(["install-update", "--git", "--all"])
+        .execute("rustup")
+        .args([
+            "run",
+            "default",
+            cargo_update.to_string_lossy().as_ref(),
+            "install-update",
+            "--git",
+            "--all",
+        ])
         .status_checked()?;
 
     if ctx.config().cleanup() {
